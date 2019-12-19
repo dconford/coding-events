@@ -1,5 +1,7 @@
 package org.launchcode.codingevents.controllers;
 
+import org.launchcode.codingevents.data.EventData;
+import org.launchcode.codingevents.models.Event;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,19 +16,10 @@ import java.util.List;
 @RequestMapping("events")
 public class EventController {
 
-    private static List<String> events = new ArrayList<>();
-
     //lives @ events/index
     @GetMapping
     public String displayAllEvents (Model model) {
-//        List<String> events = new ArrayList<>();
-//        events.add("Code With Pride");
-//        events.add("StrangeLoop");
-//        events.add("Apple WWDC");
-//        events.add("SpringOne Platform");
-//        events.add("Geek Gala 2020");
-//        events.add("MoonShot Awards 2020");
-        model.addAttribute("events", events);
+        model.addAttribute("events", EventData.getAll());
         return "events/index";
     }
 
@@ -37,12 +30,26 @@ public class EventController {
     }
 
     @PostMapping("create")
-    public String createEvent(@RequestParam String eventName) {
+    public String createEvent(@RequestParam String eventName, @RequestParam String eventDescription) {
+            EventData.add(new Event (eventName, eventDescription));
+        return "redirect:";
+    }
 
-        if (!events.contains(eventName) || (eventName.equals(" "))) {
-            events.add(eventName);
+    @GetMapping("delete")
+    public String renderDeleteEventForm(Model model) {
+        model.addAttribute("title", "Delete Events");
+        model.addAttribute("events", EventData.getAll());
+        return "events/delete";
+    }
+
+    @PostMapping("delete")
+    public String deleteEvent(@RequestParam(required = false) int[] eventIds) {
+
+        if (eventIds != null) {
+            for (int id : eventIds) {
+                EventData.remove(id);
+            }
         }
-
         return "redirect:";
     }
 }
