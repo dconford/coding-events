@@ -4,10 +4,7 @@ import org.launchcode.codingevents.data.EventData;
 import org.launchcode.codingevents.models.Event;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +27,8 @@ public class EventController {
     }
 
     @PostMapping("create")
-    public String createEvent(@RequestParam String eventName, @RequestParam String eventDescription) {
-            EventData.add(new Event (eventName, eventDescription));
+    public String createEvent(@ModelAttribute Event newEvent) {
+            EventData.add(newEvent);
         return "redirect:";
     }
 
@@ -51,5 +48,32 @@ public class EventController {
             }
         }
         return "redirect:";
+    }
+
+    @GetMapping("edit")
+    public String renderEditEventForm() {
+ //           EventData.getById(id);
+//            model.addAttribute("title", "Edit Event");
+//            model.addAttribute("events", EventData.getById(id));
+
+
+//        Use an EventData method to find the event object with the given eventId.
+//                Put the event object in the model with .addAttribute().
+//                Return the appropriate template string.
+        //Or keep @RequestMapping(value="/{studentID}", and @PathVariable Integer studentID values same
+
+
+        return "events/edit";
+    }
+
+    @PostMapping("edit")
+    public String editEvent(@RequestParam int id) {
+            EventData.getById(id);
+        return "events/edit_step_2";
+    }
+
+    @GetMapping("edit_step_2")
+    public String renderEditStep2(Model model) {
+        return "1";
     }
 }

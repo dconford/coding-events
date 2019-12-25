@@ -32,7 +32,7 @@ public class Event {
         this.description = description;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
