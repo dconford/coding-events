@@ -2,6 +2,7 @@ package org.launchcode.codingevents.controllers;
 
 import org.launchcode.codingevents.data.EventData;
 import org.launchcode.codingevents.models.Event;
+import org.launchcode.codingevents.models.EventType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,9 @@ public class EventController {
 
     //lives@ events/create
     @GetMapping("create")
-    public String renderCreateEventForm(){
+    public String renderCreateEventForm(Model model){
+        model.addAttribute(new Event());
+        model.addAttribute("eventTypes", EventType.values());
         return "events/create";
     }
 
@@ -39,6 +42,13 @@ public class EventController {
         return "events/delete";
     }
 
+    @GetMapping("delete/{eventId}")
+    public String deleteEvent(Model model, @PathVariable int eventId) {
+        EventData.remove(eventId);
+        model.addAttribute("events", EventData.getAll());
+        return "events/index";
+    }
+
     @PostMapping("delete")
     public String deleteEvent(@RequestParam(required = false) int[] eventIds) {
 
@@ -51,29 +61,32 @@ public class EventController {
     }
 
     @GetMapping("edit")
-    public String renderEditEventForm() {
- //           EventData.getById(id);
-//            model.addAttribute("title", "Edit Event");
-//            model.addAttribute("events", EventData.getById(id));
+    public String renderEditEventForm(Model model) {
+        model.addAttribute("title", "Edit Events");
+        model.addAttribute("events", EventData.getAll());
+    return "events/edit_step_2";
+    }
 
-
-//        Use an EventData method to find the event object with the given eventId.
-//                Put the event object in the model with .addAttribute().
-//                Return the appropriate template string.
-        //Or keep @RequestMapping(value="/{studentID}", and @PathVariable Integer studentID values same
-
-
+    @GetMapping("/edit/{eventId}")
+    public String renderEditEventForm(Model model, @PathVariable int eventId) {
+            EventData.getById(eventId);
+            model.addAttribute("title", "Edit Event");
+            model.addAttribute("events", EventData.getById(eventId));
         return "events/edit";
     }
-
+//    public String processEditForm(int eventId, String name, String description) {
+//        // controller code will go here
+//    }
     @PostMapping("edit")
-    public String editEvent(@RequestParam int id) {
-            EventData.getById(id);
-        return "events/edit_step_2";
+    public String editEvent(Integer eventId, String name, String description) {
+            EventData.getById(eventId).setName(name);
+            EventData.getById(eventId).setDescription(description);
+
+        return "redirect:";
     }
 
-    @GetMapping("edit_step_2")
-    public String renderEditStep2(Model model) {
-        return "1";
+    @PostMapping("edit_step_2")
+    public String renderEditStep2(@RequestParam int[] eventId) {
+        return "events/edit/{eventId}";
     }
 }

@@ -8,10 +8,17 @@ public class Event {
     private static int nextId = 1;
     private String name;
     private String description;
+    private EventType eventType;
 
-    public Event(String name, String description) {
+    public Event(String name, String description, EventType eventType) {
+        this();
         this.name = name;
         this.description = description;
+        this.eventType = eventType;
+
+    }
+
+    public Event() {
         this.id = nextId;
         nextId++;
     }
@@ -36,6 +43,13 @@ public class Event {
         return id;
     }
 
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
 
     @Override
     public String toString() {

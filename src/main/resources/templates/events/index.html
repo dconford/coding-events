@@ -16,12 +16,21 @@
             <th>ID</th>
             <th>Name</th>
             <th>Description</th>
+            <th>Event Type</th>
         </tr>
     </thead>
     <tr th:each= "event : ${events}">
         <td th:text= "${event.id}"></td>
         <td th:text= "${event.name}"></td>
         <td th:text= "${event.description}"></td>
+        <td th:text="${event.eventType.getDisplayType()}"></td>
+        <td>
+            <a th:href="@{/events/edit/{id}(id=${event.id})}" class="btn btn-success">Edit</a>
+        </td>
+        <td>
+            <a th:href="@{/events/delete/{id}(id=${event.id})}" th:action="post" class="btn btn-danger">Delete</a>
+        </td>
+
     </tr>
 </table>
 

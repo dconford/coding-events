@@ -3,61 +3,26 @@
 <head th:replace="fragments :: formatting"></head>
 <body class="container" >
 
-<h1>Edit Event Step 2</h1>
+<h1>Edit Event</h1>
 
 <nav th:replace="fragments :: navigation"></nav>
 
-<form method="post" action="/events/edit_step_2">
-    <div class="form-group">
-        <label>Name
-            <input type="text" name="name" value="<span th:text='${event.name}'></span>" class="form-control">
-        </label>
-    </div>
-    <div class="form-group">
-        <label>Description
-            <input type="text" name="description" th:value="${event.description}" class="form-control">
-        </label>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Save Edits" class="btn btn-success">
-    </div>
+<form method="post">
+
+
+    <th:block th:each="event : ${events}">
+        <div class="form-group">
+            <label>
+                <span th:text="${event.name}"></span>
+                <input type="checkbox" name="eventIds" th:value="${event.id}" class="form-control">
+            </label>
+        </div>
+    </th:block>
+
+
+
+    <input type="submit" value="Edit Event" class="btn btn-danger">
 </form>
-
-<!--<form method="post">-->
-
-
-<!--    <th:block th:each="event : ${events}">-->
-<!--        <div class="form-group">-->
-<!--            <label>-->
-<!--                <span th:text="${event.name}"></span>-->
-<!--                <input type="checkbox" name="eventIds" th:value="${event.id}" class="form-control">-->
-<!--            </label>-->
-<!--        </div>-->
-<!--    </th:block>-->
-
-
-
-<!--    <input type="submit" value="Delete Event" class="btn btn-danger">-->
-<!--</form>-->
 
 </body>
 </html>
-
-
-
-
-<!--<form method="post" action="/events/edit_step_2">-->
-<!--    <div class="form-group">-->
-<!--        <label>Name-->
-<!--            <input type="text" name="name" value="${event.name}" class="form-control">-->
-<!--        </label>-->
-<!--    </div>-->
-<!--    <div class="form-group">-->
-<!--        <label>Description-->
-<!--            <input type="text" name="description" value="${event.description}" class="form-control">-->
-<!--        </label>-->
-<!--    </div>-->
-<!--    <div class="form-group">-->
-<!--        <input type="submit" value="Save Edits" class="btn btn-success">-->
-<!--    </div>-->
-<!--</form>-->
